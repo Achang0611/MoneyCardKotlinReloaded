@@ -1,3 +1,27 @@
 name: ${name}
 main: ${group}.plugin.${name}
 version: ${version}
+author: VM
+depend:
+  - Vault
+commands:
+  moneycard:
+    description: MoneyCard command
+    usage: Unknown error, Please report issue to BaHaMuTe or github.
+    aliases:
+      - mcard
+      - card
+permissions:
+  moneycard.kt.*:
+    description: 獲得MoneyCard的所有權線
+    default: op
+    children:
+      moneycard.kt.cmd.*: true
+      moneycard.kt.action.*
+  moneycard.kt.cmd.*:
+    description: 獲得MoneyCard的所有指令權限
+    default: op
+  moneycard.kt.action.*:
+    description: 獲得MoneyCard的所有動作權限
+    default: op
+

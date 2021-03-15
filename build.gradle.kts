@@ -12,11 +12,13 @@ repositories {
     mavenCentral()
     maven { url = URI.create("https://hub.spigotmc.org/nexus/content/repositories/snapshots") }
     maven { url = URI.create("https://oss.sonatype.org/content/repositories/snapshots/") }
+    maven { url = URI.create("https://jitpack.io") }
 }
 
 dependencies {
     testImplementation(kotlin("test-junit"))
     compileOnly("org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 }
 
 tasks.test {
