@@ -1,8 +1,10 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URI
 
 plugins {
     kotlin("jvm") version "1.4.21"
+    id("com.github.johnrengelman.shadow") version "5.0.0"
 }
 
 group = "com.vm"
@@ -37,4 +39,15 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Jar> {
     archiveVersion.set("")
+    archiveBaseName.set("MoneyCard")
+}
+
+tasks.withType<ShadowJar> {
+    archiveClassifier.set("")
+}
+
+val build = (tasks["build"] as Task).apply {
+    arrayOf(
+        tasks["shadowJar"]
+    ).forEach { dependsOn(it) }
 }

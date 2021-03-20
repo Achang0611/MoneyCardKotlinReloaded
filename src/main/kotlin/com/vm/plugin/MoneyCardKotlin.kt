@@ -1,42 +1,43 @@
 package com.vm.plugin
 
+import com.vm.plugin.view.commands.MoneyCardCommand
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
-
 
 class MoneyCardKotlin : JavaPlugin() {
 
     companion object {
         lateinit var instance: MoneyCardKotlin
+            private set
+    }
+
+    init {
+        instance = this
     }
 
     private val log: Logger = Logger.getLogger("Minecraft")
-    private var econ: Economy? = null
+    private lateinit var econ: Economy
 
     override fun onEnable() {
-        if (!setupEconomy()) {
+        econ = setupEconomy() ?: run {
             log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", description.name))
             server.pluginManager.disablePlugin(this)
             return
         }
-        instance = this
 
+
+        //commands
+        MoneyCardCommand()
     }
 
-    override fun onDisable() {
-
-    }
-
-    private fun setupEconomy(): Boolean {
-        server.pluginManager.getPlugin("Vault") ?: return false
+    private fun setupEconomy(): Economy? {
+        server.pluginManager.getPlugin("Vault") ?: return null
 
         val rsp = server.servicesManager.getRegistration(
             Economy::class.java
-        ) ?: return false
+        ) ?: return null
 
-        econ = rsp.provider
-
-        return econ != null
+        return rsp.provider
     }
 }

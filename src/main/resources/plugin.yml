@@ -17,7 +17,7 @@ permissions:
     default: op
     children:
       moneycard.kt.cmd.*: true
-      moneycard.kt.action.*
+      moneycard.kt.action.*: true
   moneycard.kt.cmd.*:
     description: 獲得MoneyCard的所有指令權限
     default: op
