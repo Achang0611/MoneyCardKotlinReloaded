@@ -1,33 +1,42 @@
 package com.vm.plugin.utils
 
 import com.google.gson.GsonBuilder
-import org.bukkit.plugin.java.JavaPlugin
-import java.io.Reader
-import java.io.Writer
-
-class JsonManager(val plugin: JavaPlugin) {
-    inner class JsonIO(private var fileName: String, val replace: Boolean) {
-        private val gson = GsonBuilder()
-            .setPrettyPrinting()
-            .serializeNulls()
-            .create()
-
-        private val reader: Reader
-            get() = ResourceIO.getReader(fileName)!!
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 
-        private val writer: Writer
-            get() = ResourceIO.getWriter(fileName)!!
+object JsonManager {
 
+    private val gson = GsonBuilder()
+        .setPrettyPrinting()
+        .serializeNulls()
+        .create()
+
+    fun Any?.toJson(): String {
+        return gson.toJson(this)
+    }
+
+    fun String?.fromJson(type: Type): Any {
+        return gson.fromJson(this, type)
+    }
+
+    inline fun <reified T> getType(): Type {
+        return object : TypeToken<T>() {}.type
+    }
+
+    init {
+    }
+
+
+    class JsonIO(private var fileName: String) {
         init {
             if (!fileName.contains(".json")) fileName += ".json"
             ResourceIO.saveResourceIfNotExists(fileName)
         }
 
-        fun saveToJson(obj: Any) = writer.use { gson.toJson(obj, it) }
+        fun saveToJson(obj: Any) = ResourceIO.useWriter(fileName) { gson.toJson(obj, it) }
 
-
-        fun <T> fromJson(cls: Class<T>): T = reader.use { return gson.fromJson(it, cls) }
+        fun <T> fromJson(cls: Class<T>): T = ResourceIO.useReader(fileName) { gson.fromJson(it, cls) }
 
     }
 }

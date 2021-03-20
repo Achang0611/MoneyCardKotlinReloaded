@@ -5,6 +5,8 @@ import net.milkbowl.vault.economy.Economy
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
 
+data class A(val name: String, val age: Short)
+
 class MoneyCardKotlin : JavaPlugin() {
 
     companion object {
@@ -25,7 +27,6 @@ class MoneyCardKotlin : JavaPlugin() {
             server.pluginManager.disablePlugin(this)
             return
         }
-
 
         //commands
         MoneyCardCommand()
