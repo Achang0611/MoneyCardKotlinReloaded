@@ -2,7 +2,6 @@ package com.vm.plugin.utils
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 
 
 object JsonManager {
@@ -16,12 +15,12 @@ object JsonManager {
         return gson.toJson(this)
     }
 
-    fun String?.fromJson(type: Type): Any {
-        return gson.fromJson(this, type)
+    fun <T> String?.fromJson(type: TypeToken<T>): T {
+        return gson.fromJson(this, type.type)
     }
 
-    inline fun <reified T> getType(): Type {
-        return object : TypeToken<T>() {}.type
+    inline fun <reified T> getTypeToken(): TypeToken<T> {
+        return object : TypeToken<T>() {}
     }
 
     init {
@@ -36,7 +35,8 @@ object JsonManager {
 
         fun saveToJson(obj: Any) = ResourceIO.useWriter(fileName) { gson.toJson(obj, it) }
 
-        fun <T> fromJson(cls: Class<T>): T = ResourceIO.useReader(fileName) { gson.fromJson(it, cls) }
+        fun <T> fromJson(typeToken: TypeToken<T>): T =
+            ResourceIO.useReader(fileName) { gson.fromJson(it, typeToken.type) }
 
     }
 }

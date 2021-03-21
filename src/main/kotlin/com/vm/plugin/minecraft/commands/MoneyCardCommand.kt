@@ -1,7 +1,9 @@
-package com.vm.plugin.view.commands
+package com.vm.plugin.minecraft.commands
 
 import com.vm.plugin.MoneyCardKotlin
-import com.vm.plugin.view.send
+import com.vm.plugin.logic.CardFactory.getItem
+import com.vm.plugin.logic.MoneyCardData
+import com.vm.plugin.minecraft.addItemStackSafely
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -19,7 +21,10 @@ class MoneyCardCommand : CommandExecutor {
             TODO("send \"Unsupported Sender\"")
         }
 
-        p send "Testing"
+        val cash = args.getOrNull(0)?.toIntOrNull() ?: 0
+        val amount = args.getOrNull(1)?.toIntOrNull() ?: 1
+        p addItemStackSafely MoneyCardData.create(p, p, cash).getItem(amount)
+
 
         return true
     }

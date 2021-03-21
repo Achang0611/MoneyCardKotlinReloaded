@@ -1,11 +1,10 @@
 package com.vm.plugin
 
-import com.vm.plugin.view.commands.MoneyCardCommand
-import net.milkbowl.vault.economy.Economy
+import com.vm.plugin.logic.Bank
+import com.vm.plugin.minecraft.commands.MoneyCardCommand
+import com.vm.plugin.minecraft.events.CardChangeToMoneyEvent
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
-
-data class A(val name: String, val age: Short)
 
 class MoneyCardKotlin : JavaPlugin() {
 
@@ -19,26 +18,18 @@ class MoneyCardKotlin : JavaPlugin() {
     }
 
     private val log: Logger = Logger.getLogger("Minecraft")
-    private lateinit var econ: Economy
 
     override fun onEnable() {
-        econ = setupEconomy() ?: run {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", description.name))
+        if (!Bank.setupEconomy()) {
+            log.severe("${description.name} - Disabled due to no Vault dependency found!")
             server.pluginManager.disablePlugin(this)
             return
         }
 
         //commands
         MoneyCardCommand()
-    }
 
-    private fun setupEconomy(): Economy? {
-        server.pluginManager.getPlugin("Vault") ?: return null
-
-        val rsp = server.servicesManager.getRegistration(
-            Economy::class.java
-        ) ?: return null
-
-        return rsp.provider
+        //events
+        CardChangeToMoneyEvent()
     }
 }
