@@ -27,7 +27,7 @@ class MoneyCardCommand : CommandExecutor, PlayerArgExecutor(), Helper {
 
     override fun execute(sender: Player, args: Array<out String>) {
         val cash = args.getOrNull(0)?.toIntOrNull() ?: return sender.sendHelp()
-        val amount = args.getOrNull(1)?.toIntOrNull() ?: return sender.sendHelp()
+        val amount = args.getOrNull(1)?.toIntOrNull() ?: 1
         sender.moneyToCard(cash, amount).message?.let {
             sender send it
         }
