@@ -23,9 +23,9 @@ object JsonManager {
         return object : TypeToken<T>() {}
     }
 
-    init {
-    }
 
+    val message = JsonIO("message.json")
+    val cardItemSetting = JsonIO("card_item_setting.json")
 
     class JsonIO(private var fileName: String) {
         init {

@@ -17,19 +17,21 @@ object Bank {
         }
     }
 
-    fun OfflinePlayer.withdraw(amount: Double) {
-        econ.withdrawPlayer(this, amount)
+    fun OfflinePlayer.withdraw(amount: Double): Boolean {
+        return this.withdrawCheck(amount) && econ.withdrawPlayer(this, amount).transactionSuccess()
     }
 
-    fun OfflinePlayer.withdraw(amount: Int) {
-        econ.withdrawPlayer(this, amount.toDouble())
+    fun OfflinePlayer.withdraw(amount: Int): Boolean {
+        return this.withdraw(amount.toDouble())
     }
 
-    fun OfflinePlayer.deposit(amount: Double) {
-        econ.depositPlayer(this, amount)
+    private fun OfflinePlayer.withdrawCheck(amount: Double): Boolean = econ.getBalance(this) >= amount
+
+    fun OfflinePlayer.deposit(amount: Double): Boolean {
+        return econ.depositPlayer(this, amount).transactionSuccess()
     }
 
-    fun OfflinePlayer.deposit(amount: Int) {
-        econ.depositPlayer(this, amount.toDouble())
+    fun OfflinePlayer.deposit(amount: Int): Boolean {
+        return this.deposit(amount.toDouble())
     }
 }

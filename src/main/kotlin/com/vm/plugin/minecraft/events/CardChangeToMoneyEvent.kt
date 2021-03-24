@@ -1,7 +1,7 @@
 package com.vm.plugin.minecraft.events
 
 import com.vm.plugin.MoneyCardKotlin
-import com.vm.plugin.logic.Bank.deposit
+import com.vm.plugin.logic.CardConverter.cardToMoney
 import com.vm.plugin.logic.CardDetector.getCardInfo
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -22,15 +22,10 @@ class CardChangeToMoneyEvent : Listener {
         }
 
         val p = e.player
-        e.item?.let { item ->
-            item.getCardInfo()?.let { info ->
-                if (p.isSneaking) {
-                    val amount = item.amount
-                    item.amount = 0
-                    p.deposit(info.cash * amount)
-                } else {
-                    item.amount -= 1
-                    p.deposit(info.cash)
+        e.item?.also { item ->
+            item.getCardInfo()?.also { info ->
+                p.cardToMoney(item, info, p.isSneaking).message?.let {
+                    TODO(it)
                 }
             }
         }
