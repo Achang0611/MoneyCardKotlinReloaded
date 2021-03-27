@@ -1,5 +1,10 @@
 package com.vm.plugin.minecraft.commands
 
 interface ArgExecutor<T> {
-    fun execute(sender: T, args: Array<out String>)
+
+    var nextExecutor: LinkedHashMap<String, ArgExecutor<T>>
+
+    fun getExecutorOrNull(executorName: String): ArgExecutor<T>?
+
+    fun execute(sender: T, args: List<String>)
 }

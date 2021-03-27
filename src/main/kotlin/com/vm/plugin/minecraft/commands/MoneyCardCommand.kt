@@ -1,8 +1,10 @@
 package com.vm.plugin.minecraft.commands
 
 import com.vm.plugin.MoneyCardKotlin
-import com.vm.plugin.logic.CardConverter.moneyToCard
 import com.vm.plugin.minecraft.Sender.send
+import com.vm.plugin.minecraft.commands.executors.GetCard
+import com.vm.plugin.minecraft.commands.executors.GiveCard
+import com.vm.plugin.utils.JsonManager
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -10,30 +12,45 @@ import org.bukkit.entity.Player
 
 class MoneyCardCommand : CommandExecutor, PlayerArgExecutor(), Helper {
 
+    override var nextExecutor: LinkedHashMap<String, ArgExecutor<Player>> = LinkedHashMap()
+
     init {
         MoneyCardKotlin.instance.getCommand("moneycard")?.setExecutor(this)
             ?: throw InternalError("Cannot register command")
+        nextExecutor.apply {
+            put("get", GetCard())
+            put("give", GiveCard())
+        }
     }
 
+    private val message = JsonManager.Message
+
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        // card <mode>
         val p = sender as? Player ?: run {
-            TODO("send \"不支援的使用者\"")
+            val (msg, err) = message.getValue("warning.UnsupportedSender")
+            throw if (err.errMsg != null) err else run {
+                sender send msg!!
+                return true
+            }
         }
 
-        execute(p, args)
+        val next = args.getOrElse(0) { "null" }
+        getExecutorOrNull(next)?.execute(p, args.drop(1)) ?: sendHelp(sender)
 
         return true
     }
 
-    override fun execute(sender: Player, args: Array<out String>) {
-        val cash = args.getOrNull(0)?.toIntOrNull() ?: return sender.sendHelp()
-        val amount = args.getOrNull(1)?.toIntOrNull() ?: 1
-        sender.moneyToCard(cash, amount).message?.let {
-            sender send it
-        }
+    override fun execute(sender: Player, args: List<String>) {
+        throw UnsupportedOperationException()
     }
 
-    override fun CommandSender.sendHelp() {
-        TODO("Not yet implemented")
+    override fun sendHelp(sender: CommandSender) {
+        nextExecutor.forEach {
+            val argExecutor = it.value
+            if (argExecutor is Helper) {
+                argExecutor.sendHelp(sender)
+            }
+        }
     }
 }

@@ -24,7 +24,7 @@ class CardChangeToMoneyEvent : Listener {
         val p = e.player
         e.item?.also { item ->
             item.getCardInfo()?.also { info ->
-                p.cardToMoney(item, info, p.isSneaking).message?.let {
+                p.cardToMoney(item, info, p.isSneaking).errMsg?.let {
                     TODO(it)
                 }
             }
