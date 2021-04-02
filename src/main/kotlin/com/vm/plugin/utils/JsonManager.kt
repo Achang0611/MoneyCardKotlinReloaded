@@ -2,7 +2,6 @@ package com.vm.plugin.utils
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.vm.plugin.logic.Error
 
 
 object JsonManager {
@@ -29,16 +28,16 @@ object JsonManager {
         private fun getStruct(): Map<String, Map<String, String>> =
             message.fromJson(getTypeToken())
 
-        fun getValue(path: String): Pair<String?, Error> {
+        fun getValue(path: String): Pair<String, Error> {
             val keys = path.split(".")
             if (keys.size != 2) {
-                return null to Error.jsonKeyNotFound(path)
+                return "" to Error.jsonKeyNotFound(path)
             }
 
             val result = getStruct()[keys[0]]?.get(keys[1])
             return if (result != null) {
                 result to Error(null)
-            } else null to Error.jsonKeyNotFound(path)
+            } else "" to Error.jsonKeyNotFound(path)
         }
     }
 

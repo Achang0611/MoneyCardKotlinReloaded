@@ -4,6 +4,7 @@ import com.vm.plugin.MoneyCardKotlin
 import com.vm.plugin.minecraft.Sender.send
 import com.vm.plugin.minecraft.commands.executors.GetCard
 import com.vm.plugin.minecraft.commands.executors.GiveCard
+import com.vm.plugin.utils.Error.Companion.throwIfNotNull
 import com.vm.plugin.utils.JsonManager
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -29,10 +30,9 @@ class MoneyCardCommand : CommandExecutor, PlayerArgExecutor(), Helper {
         // card <mode>
         val p = sender as? Player ?: run {
             val (msg, err) = message.getValue("warning.UnsupportedSender")
-            throw if (err.errMsg != null) err else run {
-                sender send msg!!
-                return true
-            }
+            err.throwIfNotNull()
+            sender send msg
+            return true
         }
 
         val next = args.getOrElse(0) { "null" }

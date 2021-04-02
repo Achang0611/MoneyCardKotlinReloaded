@@ -1,10 +1,12 @@
 package com.vm.plugin.minecraft.commands.executors
 
 import com.vm.plugin.logic.CardConverter.moneyToCard
+import com.vm.plugin.minecraft.ChatFormatter
 import com.vm.plugin.minecraft.Sender.send
 import com.vm.plugin.minecraft.commands.ArgExecutor
 import com.vm.plugin.minecraft.commands.Helper
 import com.vm.plugin.minecraft.commands.PlayerArgExecutor
+import com.vm.plugin.utils.Error.Companion.throwIfNotNull
 import com.vm.plugin.utils.JsonManager
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -21,20 +23,15 @@ class GetCard : PlayerArgExecutor(), Helper {
 
         sender.moneyToCard(cash, amount).errMsg?.let {
             sender send it
-        } ?: run {
-            val (msg, err) = message.getValue("general.MoneyToCard")
-            throw if (err.errMsg != null) err else run {
-                sender send msg!!
-                return
-            }
+            return
         }
+
+        sender send ChatFormatter.moneyToCard(cash, amount)
     }
 
     override fun sendHelp(sender: CommandSender) {
         val (msg, err) = message.getValue("help.Get")
-        throw if (err.errMsg != null) err else run {
-            sender send msg!!
-            return
-        }
+        err.throwIfNotNull()
+        sender send msg
     }
 }

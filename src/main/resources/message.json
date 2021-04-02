@@ -4,15 +4,16 @@
     "Give": "/card give <目標玩家> <金額> [<數量>]"
   },
   "general": {
-    "MoneyToCard": "成功將錢轉換成卡片",
-    "MoneyToCardToPlayer": "成功將錢轉換成卡片並交給目標玩家",
-    "MoneyToCardFromPlayer": "你收到玩家將錢轉換的卡片"
+    "MoneyToCard": "成功將{cash}元轉換成{amount}張卡片",
+    "MoneyToCardToPlayer": "成功將{cash}元轉換成{amount}張卡片並交給{player}",
+    "MoneyToCardFromPlayer": "你收到{player}給予的{cash}元轉換成{amount}張卡片",
+    "CardToMoney": "成功將{amount}張卡片換成{total_cash}元"
   },
   "warning": {
     "UnsupportedSender": "目前不支援此指令輸入者",
     "InventoryFull": "目標背包已經滿了",
-    "InvalidMoney": "錢不足夠換成卡片",
-    "PlayerNotFound": "找不到目標玩家"
+    "InvalidMoney": "錢不足夠換成卡片,需要{total_cash}元",
+    "PlayerNotFound": "找不到{player}"
   },
   "error": {
   }
