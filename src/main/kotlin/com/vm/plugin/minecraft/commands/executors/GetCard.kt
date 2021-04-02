@@ -24,7 +24,7 @@ class GetCard : PlayerArgExecutor(), Helper, RequirePermissible {
     override fun execute(sender: Player, args: List<String>) {
         // card get <cash> [<amount = 1>]
         if (!sender.hasPermission(required)) {
-            ChatFormatter.notPermission(required)
+            sender send ChatFormatter.notPermission(required)
             return
         }
 

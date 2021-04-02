@@ -29,11 +29,11 @@ object ChatFormatter {
     }
 
     fun moneyToCardToPlayer(cash: Int, amount: Int, toPlayerName: String): String {
-        return aboutMoney("general.MoneyToCardToPlayer", cash, amount, "player" to toPlayerName)
+        return aboutMoney("general.MoneyToCardToPlayer", cash, amount, "{player}" to toPlayerName)
     }
 
     fun moneyToCardFromPlayer(cash: Int, amount: Int, fromPlayerName: String): String {
-        return aboutMoney("general.MoneyToCardFromPlayer", cash, amount, "player" to fromPlayerName)
+        return aboutMoney("general.MoneyToCardFromPlayer", cash, amount, "{player}" to fromPlayerName)
     }
 
     fun cardToMoney(cash: Int, amount: Int): String {
@@ -49,6 +49,6 @@ object ChatFormatter {
     }
 
     fun notPermission(permissions: Permissions): String {
-        return baseFormat("warning.NotPermission", "perm" to permissions)
+        return baseFormat("warning.NotPermission", "{perm}" to permissions)
     }
 }

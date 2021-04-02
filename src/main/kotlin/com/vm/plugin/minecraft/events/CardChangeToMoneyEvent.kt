@@ -25,11 +25,6 @@ class CardChangeToMoneyEvent : Listener, RequirePermissible {
 
     @EventHandler
     fun onPlayerInteractEvent(e: PlayerInteractEvent) {
-        if (!e.player.hasPermission(required)) {
-            ChatFormatter.notPermission(required)
-            return
-        }
-
         if (e.hand != EquipmentSlot.HAND) {
             return
         }
@@ -40,6 +35,11 @@ class CardChangeToMoneyEvent : Listener, RequirePermissible {
 
         val cash = cardData.cash.toInt()
         val amount = item.amount
+
+        if (!e.player.hasPermission(required)) {
+            e.player send ChatFormatter.notPermission(required)
+            return
+        }
 
         p.cardToMoney(item, cardData, p.isSneaking).errMsg?.let {
             p send it

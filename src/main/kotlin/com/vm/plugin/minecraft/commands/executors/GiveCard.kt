@@ -25,7 +25,7 @@ class GiveCard : PlayerArgExecutor(), Helper, RequirePermissible {
     override fun execute(sender: Player, args: List<String>) {
         // card give <target> <cash> [<amount = 1>]
         if (!sender.hasPermission(required)) {
-            ChatFormatter.notPermission(required)
+            sender send ChatFormatter.notPermission(required)
             return
         }
 
@@ -47,14 +47,8 @@ class GiveCard : PlayerArgExecutor(), Helper, RequirePermissible {
             return
         }
 
-        val (msg, err) = message.getValue("general.MoneyToCardToPlayer")
-        err.throwIfNotNull()
-        sender send msg
-
-        val (msg2, err2) = message.getValue("general.MoneyToCardFromPlayer")
-        err2.throwIfNotNull()
-        target send msg2
-
+        sender send ChatFormatter.moneyToCardToPlayer(cash, amount, target.name)
+        target send ChatFormatter.moneyToCardFromPlayer(cash, amount, sender.name)
     }
 
     override fun sendHelp(sender: CommandSender) {
