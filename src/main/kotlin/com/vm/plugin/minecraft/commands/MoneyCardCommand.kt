@@ -1,6 +1,8 @@
 package com.vm.plugin.minecraft.commands
 
 import com.vm.plugin.MoneyCardKotlin
+import com.vm.plugin.minecraft.RequirePermissible
+import com.vm.plugin.minecraft.Sender.hasPermission
 import com.vm.plugin.minecraft.Sender.send
 import com.vm.plugin.minecraft.commands.executors.GetCard
 import com.vm.plugin.minecraft.commands.executors.GiveCard
@@ -46,9 +48,15 @@ class MoneyCardCommand : CommandExecutor, PlayerArgExecutor(), Helper {
     }
 
     override fun sendHelp(sender: CommandSender) {
-        nextExecutor.forEach {
-            val argExecutor = it.value
+        for (entry in nextExecutor) {
+            val argExecutor = entry.value
             if (argExecutor is Helper) {
+                if (argExecutor is RequirePermissible) {
+                    if (!sender.hasPermission(argExecutor.required)) {
+                        continue
+                    }
+                }
+
                 argExecutor.sendHelp(sender)
             }
         }

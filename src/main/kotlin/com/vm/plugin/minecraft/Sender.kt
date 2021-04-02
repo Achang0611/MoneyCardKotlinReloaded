@@ -13,4 +13,8 @@ object Sender {
             this send i
         }
     }
+
+    infix fun CommandSender.hasPermission(perm: Permissions): Boolean {
+        return this.hasPermission(perm.toString())
+    }
 }

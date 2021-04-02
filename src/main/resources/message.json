@@ -11,6 +11,7 @@
   },
   "warning": {
     "UnsupportedSender": "目前不支援此指令輸入者",
+    "NotPermission": "你沒有足夠的權限: {perm}",
     "InventoryFull": "目標背包已經滿了",
     "InvalidMoney": "錢不足夠換成卡片,需要{total_cash}元",
     "PlayerNotFound": "找不到{player}"

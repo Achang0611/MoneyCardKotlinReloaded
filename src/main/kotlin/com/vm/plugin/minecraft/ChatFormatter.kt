@@ -47,4 +47,8 @@ object ChatFormatter {
     fun playerNotFound(playerName: String): String {
         return baseFormat("warning.PlayerNotFound", "{player}" to playerName)
     }
+
+    fun notPermission(permissions: Permissions): String {
+        return baseFormat("warning.NotPermission", "perm" to permissions)
+    }
 }
