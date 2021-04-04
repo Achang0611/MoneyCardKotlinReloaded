@@ -2,7 +2,7 @@ package com.vm.plugin.minecraft.events
 
 import com.vm.plugin.MoneyCardKotlin
 import com.vm.plugin.logic.CardConverter.cardToMoney
-import com.vm.plugin.logic.CardDetector.getCardInfo
+import com.vm.plugin.logic.CardDetector.isCard
 import com.vm.plugin.minecraft.ChatFormatter
 import com.vm.plugin.minecraft.Permissions
 import com.vm.plugin.minecraft.RequirePermissible
@@ -31,21 +31,23 @@ class CardChangeToMoneyEvent : Listener, RequirePermissible {
 
         val p = e.player
         val item = e.item ?: return
-        val cardData = item.getCardInfo() ?: return
-
-        val cash = cardData.cash.toInt()
-        val amount = item.amount
+        if (!item.isCard()) {
+            return
+        }
 
         if (!e.player.hasPermission(required)) {
             e.player send ChatFormatter.notPermission(required)
             return
         }
 
-        p.cardToMoney(item, cardData, p.isSneaking).errMsg?.let {
+        val changeAll = p.isSneaking
+
+        val (result, err) = p.cardToMoney(item, changeAll)
+        err.errMsg?.let {
             p send it
             return
         }
 
-        p send ChatFormatter.cardToMoney(cash, amount)
+        p send ChatFormatter.cardToMoney(result)
     }
 }

@@ -1,5 +1,6 @@
 package com.vm.plugin.minecraft
 
+import com.vm.plugin.logic.Bank
 import com.vm.plugin.utils.Error.Companion.throwIfNotNull
 import com.vm.plugin.utils.JsonManager
 import com.vm.plugin.utils.StringFormatter
@@ -14,38 +15,42 @@ object ChatFormatter {
         return StringFormatter.format(msg, *extension)
     }
 
-    private fun aboutMoney(path: String, cash: Int, amount: Int, vararg extension: Pair<String, Any>): String {
+    private fun aboutMoney(path: String, info: Bank.MoneyInfo, vararg extension: Pair<String, Any>): String {
         return baseFormat(
             path,
-            "{cash}" to cash,
-            "{amount}" to amount,
-            "{total_cash}" to cash * amount,
+            "{cash}" to info.cash,
+            "{amount}" to info.amount,
+            "{total_cash}" to info.cash * info.amount,
             *extension
         )
     }
 
-    fun moneyToCard(cash: Int, amount: Int): String {
-        return aboutMoney("general.MoneyToCard", cash, amount)
+    fun moneyToCardToPlayer(info: Bank.MoneyInfo, toPlayerName: String): String {
+        return aboutMoney("general.MoneyToCardToPlayer", info, "{player}" to toPlayerName)
     }
 
-    fun moneyToCardToPlayer(cash: Int, amount: Int, toPlayerName: String): String {
-        return aboutMoney("general.MoneyToCardToPlayer", cash, amount, "{player}" to toPlayerName)
+    fun moneyToCardFromPlayer(info: Bank.MoneyInfo, fromPlayerName: String): String {
+        return aboutMoney("general.MoneyToCardFromPlayer", info, "{player}" to fromPlayerName)
     }
 
-    fun moneyToCardFromPlayer(cash: Int, amount: Int, fromPlayerName: String): String {
-        return aboutMoney("general.MoneyToCardFromPlayer", cash, amount, "{player}" to fromPlayerName)
+    fun moneyToCard(info: Bank.MoneyInfo): String {
+        return aboutMoney("general.MoneyToCard", info)
     }
 
-    fun cardToMoney(cash: Int, amount: Int): String {
-        return aboutMoney("general.CardToMoney", cash, amount)
+    fun cardToMoney(info: Bank.MoneyInfo): String {
+        return aboutMoney("general.CardToMoney", info)
     }
 
-    fun invalidMoney(cash: Int, amount: Int): String {
-        return aboutMoney("warning.InvalidMoney", cash, amount)
+    fun invalidMoney(info: Bank.MoneyInfo): String {
+        return aboutMoney("warning.InvalidMoney", info)
     }
 
     fun playerNotFound(playerName: String): String {
         return baseFormat("warning.PlayerNotFound", "{player}" to playerName)
+    }
+
+    fun inventoryFull(playerName: String): String {
+        return baseFormat("warning.InventoryFull", "{player}" to playerName)
     }
 
     fun notPermission(permissions: Permissions): String {

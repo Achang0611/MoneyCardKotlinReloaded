@@ -1,7 +1,7 @@
 {
   "material": "PAPER",
-  "name": "TODO Card Name",
+  "name": "{cash}元",
   "lore": [
-    "TODO Card Lore"
+    "{cash}元"
   ]
 }

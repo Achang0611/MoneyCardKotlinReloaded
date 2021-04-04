@@ -25,12 +25,16 @@ permissions:
     children:
       moneycard.kt.cmd.get: true
       moneycard.kt.cmd.give: true
+      moneycard.kt.cmd.reload: true
   moneycard.kt.cmd.get:
     description: 允許玩家使用get指令獲取卡片
     default: true
   moneycard.kt.cmd.give:
     description: 允許玩家使用give指令給予卡片
     default: true
+  moneycard.kt.cmd.reload:
+    description: 允許玩家重啟插件
+    default: op
 
   moneycard.kt.action.*:
     description: 獲得MoneyCard的所有動作權限
@@ -40,4 +44,7 @@ permissions:
   moneycard.kt.action.ctm:
     description: 允許玩家將卡片換成錢
     default: true
+  moneycard.kt.action.cbypass:
+    description: 允許玩家將卡片用來合成
+    default: op
 

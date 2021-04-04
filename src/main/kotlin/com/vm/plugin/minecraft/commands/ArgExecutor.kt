@@ -1,10 +1,20 @@
 package com.vm.plugin.minecraft.commands
 
-interface ArgExecutor<T> {
+import org.bukkit.command.CommandSender
 
-    var nextExecutor: LinkedHashMap<String, ArgExecutor<T>>
+abstract class ArgExecutor {
 
-    fun getExecutorOrNull(executorName: String): ArgExecutor<T>?
+    abstract val requiredPlayer: Boolean
 
-    fun execute(sender: T, args: List<String>)
+    abstract val nextExecutor: LinkedHashMap<String, ArgExecutor>
+
+    fun getExecutorOrNull(executorName: String, requiredPlayer: Boolean = false): ArgExecutor? {
+        val default = nextExecutor.getOrDefault(executorName, null)
+        if (requiredPlayer && default != null) {
+            return if (default.requiredPlayer) default else null
+        }
+        return default
+    }
+
+    abstract fun execute(sender: CommandSender, args: List<String>)
 }

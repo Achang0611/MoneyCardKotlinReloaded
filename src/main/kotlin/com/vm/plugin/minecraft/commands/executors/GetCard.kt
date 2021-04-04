@@ -1,5 +1,6 @@
 package com.vm.plugin.minecraft.commands.executors
 
+import com.vm.plugin.logic.Bank
 import com.vm.plugin.logic.CardConverter.moneyToCard
 import com.vm.plugin.minecraft.ChatFormatter
 import com.vm.plugin.minecraft.Permissions
@@ -18,25 +19,29 @@ class GetCard : PlayerArgExecutor(), Helper, RequirePermissible {
 
     override val required = Permissions.CmdGet
 
-    override var nextExecutor: LinkedHashMap<String, ArgExecutor<Player>> = LinkedHashMap()
+    override var nextExecutor: LinkedHashMap<String, ArgExecutor> = LinkedHashMap()
     private val message = JsonManager.Message
 
-    override fun execute(sender: Player, args: List<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         // card get <cash> [<amount = 1>]
+        sender as Player
+
         if (!sender.hasPermission(required)) {
             sender send ChatFormatter.notPermission(required)
             return
         }
 
-        val cash = args.getOrNull(0)?.toIntOrNull() ?: return sendHelp(sender)
+        val cash = args.getOrNull(0)?.toDoubleOrNull() ?: return sendHelp(sender)
         val amount = args.getOrNull(1)?.toIntOrNull() ?: 1
 
-        sender.moneyToCard(cash, amount).errMsg?.let {
+        val info = Bank.MoneyInfo(cash, amount)
+
+        sender.moneyToCard(info).errMsg?.let {
             sender send it
             return
         }
 
-        sender send ChatFormatter.moneyToCard(cash, amount)
+        sender send ChatFormatter.moneyToCard(info)
     }
 
     override fun sendHelp(sender: CommandSender) {

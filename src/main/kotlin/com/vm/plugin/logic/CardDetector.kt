@@ -11,7 +11,7 @@ object CardDetector {
         } else null
     }
 
-    private fun ItemStack.isCard(): Boolean {
+    fun ItemStack.isCard(): Boolean {
         return this.itemMeta?.run {
             persistentDataContainer.has(CardFactory.namespace, MoneyCardPersistentData())
         } ?: false

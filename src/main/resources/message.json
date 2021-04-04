@@ -1,18 +1,20 @@
 {
   "help": {
-    "Get": "/card get <金額> [<數量>]",
-    "Give": "/card give <目標玩家> <金額> [<數量>]"
+    "Get": "/card get <金額> [<數量>] - 轉換卡片給自己",
+    "Give": "/card give <目標玩家> <金額> [<數量>] - 轉換卡片給目標玩家",
+    "Reload": "/card reload - 重啟插件"
   },
   "general": {
-    "MoneyToCard": "成功將{cash}元轉換成{amount}張卡片",
-    "MoneyToCardToPlayer": "成功將{cash}元轉換成{amount}張卡片並交給{player}",
-    "MoneyToCardFromPlayer": "你收到{player}給予的{cash}元轉換成{amount}張卡片",
-    "CardToMoney": "成功將{amount}張卡片換成{total_cash}元"
+    "MoneyToCard": "成功轉換{amount}張{cash}元的卡片",
+    "MoneyToCardToPlayer": "成功轉換{amount}張{cash}元的卡片並交給{player}",
+    "MoneyToCardFromPlayer": "你收到{player}給予{amount}張{cash}元的卡片",
+    "CardToMoney": "成功將{amount}張卡片換成{total_cash}元",
+    "Reloaded": "重啟結束"
   },
   "warning": {
     "UnsupportedSender": "目前不支援此指令輸入者",
     "NotPermission": "你沒有足夠的權限: {perm}",
-    "InventoryFull": "目標背包已經滿了",
+    "InventoryFull": "{player}的背包已經滿了",
     "InvalidMoney": "錢不足夠換成卡片,需要{total_cash}元",
     "PlayerNotFound": "找不到{player}"
   },

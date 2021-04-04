@@ -8,6 +8,12 @@ object Bank {
 
     private lateinit var econ: Economy
 
+    data class MoneyInfo(val cash: Double, val amount: Int) {
+        companion object {
+            fun getEmptyInfo(): MoneyInfo = MoneyInfo(0.0, 0)
+        }
+    }
+
     fun setupEconomy(): Boolean {
         MoneyCardKotlin.instance.run {
             server.pluginManager.getPlugin("Vault") ?: return false
