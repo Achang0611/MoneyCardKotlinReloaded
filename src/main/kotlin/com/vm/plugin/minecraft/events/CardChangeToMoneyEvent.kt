@@ -8,6 +8,7 @@ import com.vm.plugin.minecraft.Permissions
 import com.vm.plugin.minecraft.RequirePermissible
 import com.vm.plugin.minecraft.Sender.hasPermission
 import com.vm.plugin.minecraft.Sender.send
+import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
@@ -48,6 +49,7 @@ class CardChangeToMoneyEvent : Listener, RequirePermissible {
             return
         }
 
+        p.playSound(p.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
         p send ChatFormatter.cardToMoney(result)
     }
 }

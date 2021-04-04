@@ -12,6 +12,7 @@ import com.vm.plugin.minecraft.commands.Helper
 import com.vm.plugin.minecraft.commands.PlayerArgExecutor
 import com.vm.plugin.utils.Error.Companion.throwIfNotNull
 import com.vm.plugin.utils.JsonManager
+import org.bukkit.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -41,6 +42,7 @@ class GetCard : PlayerArgExecutor(), Helper, RequirePermissible {
             return
         }
 
+        sender.playSound(sender.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
         sender send ChatFormatter.moneyToCard(info)
     }
 
