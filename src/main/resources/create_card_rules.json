@@ -1,0 +1,10 @@
+{
+  "amount": {
+    "minimum": 0,
+    "maximum": 2147483647
+  },
+  "cash": {
+    "minimum": 0,
+    "maximum": 2147483647
+  }
+}

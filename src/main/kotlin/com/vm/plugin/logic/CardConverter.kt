@@ -16,7 +16,7 @@ object CardConverter {
     fun Player.moneyToCard(info: Bank.MoneyInfo): Error {
         return if (this.withdraw(info.getTotal())) {
             if (this addItemStackSafely MoneyCardData(info.cash).getItem(info.amount)) {
-                Error.notError()
+                CardInfoValidator.returnErrorIfIsInvalidValue(info)
             } else {
                 if (this.deposit(info.getTotal())) {
                     Error(ChatFormatter.inventoryFull(this.name))

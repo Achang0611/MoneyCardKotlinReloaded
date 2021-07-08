@@ -45,6 +45,22 @@ object ChatFormatter {
         return aboutMoney("warning.InvalidMoney", info)
     }
 
+    fun invalidAmount(info: Bank.MoneyInfo): String {
+        val amountRule = JsonManager.CreateCardRules.rules.amount
+        return aboutMoney(
+            "warning.InvalidAmount", info,
+            "{amount_range}" to "${amountRule.minimum} ~ ${amountRule.maximum}"
+        )
+    }
+
+    fun invalidCash(info: Bank.MoneyInfo): String {
+        val cashRule = JsonManager.CreateCardRules.rules.cash
+        return aboutMoney(
+            "warning.InvalidCash", info,
+            "{cash_range}" to "${cashRule.minimum} ~ ${cashRule.maximum}"
+        )
+    }
+
     fun playerNotFound(playerName: String): String {
         return baseFormat("warning.PlayerNotFound", "{player}" to playerName)
     }

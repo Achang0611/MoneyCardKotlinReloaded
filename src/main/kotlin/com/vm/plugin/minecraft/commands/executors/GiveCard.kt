@@ -59,7 +59,7 @@ class GiveCard : PlayerArgExecutor(), Helper, RequirePermissible {
 
         sender.playSound(sender.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
         sender send ChatFormatter.moneyToCardToPlayer(info, target.name)
-        target.playSound(sender.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
+        target.playSound(target.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
         target send ChatFormatter.moneyToCardFromPlayer(info, sender.name)
     }
 

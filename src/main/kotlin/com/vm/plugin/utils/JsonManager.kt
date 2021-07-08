@@ -41,6 +41,15 @@ object JsonManager {
         }
     }
 
+    object CreateCardRules {
+        private val createCardRules by lazy { JsonIO("create_card_rules.json") }
+        val rules: Rules = createCardRules.fromJson(getTypeToken())
+
+        data class AmountLimit(val minimum: Int, val maximum: Int)
+        data class CashLimit(val minimum: Double, val maximum: Double)
+        data class Rules(val amount: AmountLimit, val cash: CashLimit)
+    }
+
     val cardItemSetting by lazy { JsonIO("card_item_setting.json") }
 
     class JsonIO(private var fileName: String) {
