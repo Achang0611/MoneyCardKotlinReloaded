@@ -51,6 +51,7 @@ permissions:
     defualt: op
     children:
       moneycard.kt.action.bypass.crafting: true
+      moneycard.kt.action.bypass.trading: true
   moneycard.kt.action.bypass.crafting:
     description: 允許玩家將卡片用來合成
     default: op
