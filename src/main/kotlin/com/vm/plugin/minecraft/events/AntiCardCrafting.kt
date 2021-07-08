@@ -31,7 +31,7 @@ class AntiCardCrafting : Listener, RequirePermissible {
 
 
         e.inventory.matrix.forEach {
-            it // 因為kotlin的bug 沒辦法偵測他有可能是null
+            it ?: return@forEach // 因為kotlin的bug 沒辦法偵測他有可能是null
             if (it.isCard()) {
                 e.inventory.result = ItemStack(Material.AIR)
             }
