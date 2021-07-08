@@ -7,31 +7,36 @@ object ResourceIO {
 
     private val plugin = MoneyCardKotlin.instance
 
-    fun saveResourceIfNotExists(fileNameUnchecked: String) {
-        if (fileNameUnchecked == "") {
+    fun saveResourceIfNotExists(fileName: String): Boolean {
+        if (fileName == "") {
             throw IllegalArgumentException("ResourcePath cannot be null or empty")
         }
 
-        val fileName =
-            if (!fileNameUnchecked.startsWith("/") || !fileNameUnchecked.startsWith("\\")) "/$fileNameUnchecked"
-            else fileNameUnchecked
+        val finalFileName = fileName.replace("\\", "/").let {
+            if (it.startsWith("/")) it else "/$it"
+        }
 
-        val reader = plugin.javaClass.getResourceAsStream(fileName).reader()
-
-        val outFile = File(plugin.dataFolder, fileName).apply {
+        val outFile = getFile(finalFileName).apply {
             if (exists()) {
-                return
+                return false
             }
         }
 
-        fileName.lastIndexOf('\\').let {
-            File(plugin.dataFolder, fileName.substring(0, if (it >= 0) it else 0)).run {
+        finalFileName.lastIndexOf('/').let {
+            File(plugin.dataFolder, finalFileName.substring(0, if (it >= 0) it else 0)).run {
                 if (!exists()) {
                     mkdirs()
                 }
             }
         }
 
+        val reader = plugin.javaClass.getResourceAsStream(finalFileName)?.reader()
+        reader ?: run {
+            if (outFile.createNewFile() && !outFile.exists()) {
+                throw InternalError("Cannot create a new file in resources path")
+            }
+            return true
+        }
 
         reader.use {
             FileWriter(outFile).use { out ->
@@ -44,13 +49,17 @@ object ResourceIO {
                 }
             }
         }
+
+        return true
     }
 
     fun <R> useReader(fileName: String, block: (Reader) -> R): R = getReader(fileName).use(block)
 
     fun <R> useWriter(fileName: String, block: (Writer) -> R): R = getWriter(fileName).use(block)
 
-    private fun getReader(fileName: String): Reader = FileReader(File(plugin.dataFolder, fileName))
+    private fun getReader(fileName: String): Reader = FileReader(getFile(fileName))
 
-    private fun getWriter(fileName: String): Writer = FileWriter(File(plugin.dataFolder, fileName))
+    private fun getWriter(fileName: String): Writer = FileWriter(getFile(fileName))
+
+    fun getFile(fileName: String): File = File(plugin.dataFolder, fileName)
 }

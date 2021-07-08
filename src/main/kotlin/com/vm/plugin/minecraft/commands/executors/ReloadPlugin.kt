@@ -1,8 +1,11 @@
 package com.vm.plugin.minecraft.commands.executors
 
+import com.vm.plugin.CardLogger
 import com.vm.plugin.MoneyCardKotlin
+import com.vm.plugin.minecraft.ChatFormatter
 import com.vm.plugin.minecraft.Permissions
 import com.vm.plugin.minecraft.RequirePermissible
+import com.vm.plugin.minecraft.Sender.hasPermission
 import com.vm.plugin.minecraft.Sender.send
 import com.vm.plugin.minecraft.commands.AnyArgExecutor
 import com.vm.plugin.minecraft.commands.ArgExecutor
@@ -22,6 +25,14 @@ class ReloadPlugin : AnyArgExecutor(), RequirePermissible, Helper {
     private val plugin = MoneyCardKotlin.instance
 
     override fun execute(sender: CommandSender, args: List<String>) {
+        if (!sender.hasPermission(required)) {
+            CardLogger.refuseCommand(sender, required)
+            sender send ChatFormatter.notPermission(required)
+            return
+        }
+
+        CardLogger.logger.info("${sender.name} 重啟插件")
+
         plugin.server.pluginManager.disablePlugin(plugin)
         plugin.server.pluginManager.enablePlugin(plugin)
 

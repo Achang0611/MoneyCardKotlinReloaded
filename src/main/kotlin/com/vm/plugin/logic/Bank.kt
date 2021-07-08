@@ -3,6 +3,7 @@ package com.vm.plugin.logic
 import com.vm.plugin.MoneyCardKotlin
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.OfflinePlayer
+import java.util.*
 
 object Bank {
 
@@ -12,6 +13,29 @@ object Bank {
         companion object {
             fun getEmptyInfo(): MoneyInfo = MoneyInfo(0.0, 0)
         }
+
+        private val uuid by lazy { UUID.randomUUID()!! }
+
+        fun getTotal(): Double {
+            return this.amount * this.cash
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is MoneyInfo) return false
+
+            if (cash != other.cash) return false
+            if (amount != other.amount) return false
+            if (uuid != other.uuid) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            return uuid.hashCode()
+        }
+
+
     }
 
     fun setupEconomy(): Boolean {

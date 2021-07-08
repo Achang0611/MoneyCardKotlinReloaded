@@ -7,7 +7,8 @@ import org.bukkit.inventory.ItemStack
 object InventoryEditor {
     infix fun InventoryHolder.addItemStackSafely(itemStack: ItemStack): Boolean {
         var slotLeft = 0
-        this.inventory.storageContents.forEach {
+        this.inventory.storageContents.toList().forEach {
+            @Suppress("SENSELESS_COMPARISON")
             if (it == null || it.type == Material.AIR || it.isSimilar(itemStack)) {
                 slotLeft++
             }

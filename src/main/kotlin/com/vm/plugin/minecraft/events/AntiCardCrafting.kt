@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack
 
 class AntiCardCrafting : Listener, RequirePermissible {
 
-    override val required = Permissions.ActCBypass
+    override val required = Permissions.ActCraftingBypass
 
     init {
         MoneyCardKotlin.instance.let {
@@ -22,15 +22,16 @@ class AntiCardCrafting : Listener, RequirePermissible {
     }
 
     @EventHandler
-    fun onPrepareItemCraftEvent(e: PrepareItemCraftEvent) {
-        e.viewers.forEach {
-            if (it.hasPermission(required)) {
-                return
-            }
+    fun onPrepareItemCraft(e: PrepareItemCraftEvent) {
+        val p = e.view.player
+
+        if (p.hasPermission(required)) {
+            return
         }
 
+
         e.inventory.matrix.forEach {
-            it ?: return
+            it // 因為kotlin的bug 沒辦法偵測他有可能是null
             if (it.isCard()) {
                 e.inventory.result = ItemStack(Material.AIR)
             }

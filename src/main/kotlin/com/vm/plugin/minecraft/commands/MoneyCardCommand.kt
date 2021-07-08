@@ -6,7 +6,6 @@ import com.vm.plugin.minecraft.Sender.hasPermission
 import com.vm.plugin.minecraft.Sender.send
 import com.vm.plugin.minecraft.commands.executors.GetCard
 import com.vm.plugin.minecraft.commands.executors.GiveCard
-import com.vm.plugin.minecraft.commands.executors.ReloadPlugin
 import com.vm.plugin.utils.Error.Companion.throwIfNotNull
 import com.vm.plugin.utils.JsonManager
 import org.bukkit.command.Command
@@ -24,7 +23,7 @@ class MoneyCardCommand : CommandExecutor, PlayerArgExecutor(), Helper {
         nextExecutor.apply {
             put("get", GetCard())
             put("give", GiveCard())
-            put("reload", ReloadPlugin())
+//            put("reload", ReloadPlugin())
         }
     }
 

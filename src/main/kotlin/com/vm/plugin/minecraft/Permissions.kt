@@ -12,7 +12,9 @@ enum class Permissions(private val permission: String) {
     //action
     Action("$Prefix.action"),
     ActCTM("$Action.ctm"),
-    ActCBypass("$Action.cbypass");
+    ActBypass("$Action.bypass"),
+    ActCraftingBypass("$ActBypass.crafting"),
+    ActTradingBypass("$ActBypass.trading");
 
 
     override fun toString(): String {

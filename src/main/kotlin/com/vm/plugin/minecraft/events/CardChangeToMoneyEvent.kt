@@ -1,5 +1,6 @@
 package com.vm.plugin.minecraft.events
 
+import com.vm.plugin.CardLogger
 import com.vm.plugin.MoneyCardKotlin
 import com.vm.plugin.logic.CardConverter.cardToMoney
 import com.vm.plugin.logic.CardDetector.isCard
@@ -25,7 +26,7 @@ class CardChangeToMoneyEvent : Listener, RequirePermissible {
     }
 
     @EventHandler
-    fun onPlayerInteractEvent(e: PlayerInteractEvent) {
+    fun onPlayerInteract(e: PlayerInteractEvent) {
         if (e.hand != EquipmentSlot.HAND) {
             return
         }
@@ -43,13 +44,14 @@ class CardChangeToMoneyEvent : Listener, RequirePermissible {
 
         val changeAll = p.isSneaking
 
-        val (result, err) = p.cardToMoney(item, changeAll)
+        val (info, err) = p.cardToMoney(item, changeAll)
         err.errMsg?.let {
             p send it
             return
         }
 
+        CardLogger.moneyEvent(p, info)
         p.playSound(p.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
-        p send ChatFormatter.cardToMoney(result)
+        p send ChatFormatter.cardToMoney(info)
     }
 }

@@ -36,7 +36,7 @@ object JsonManager {
 
             val result = getStruct()[keys[0]]?.get(keys[1])
             return if (result != null) {
-                result to Error(null)
+                result to Error.notError()
             } else "" to Error.jsonKeyNotFound(path)
         }
     }

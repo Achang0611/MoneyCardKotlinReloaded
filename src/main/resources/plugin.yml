@@ -4,6 +4,7 @@ version: ${version}
 author: VM
 depend:
   - Vault
+  - Kotlin
 commands:
   moneycard:
     description: MoneyCard command
@@ -13,7 +14,7 @@ commands:
       - card
 permissions:
   moneycard.kt.*:
-    description: 獲得MoneyCard的所有權線
+    description: 獲得MoneyCard的所有權限
     default: op
     children:
       moneycard.kt.cmd.*: true
@@ -41,10 +42,18 @@ permissions:
     default: op
     children:
       moneycard.kt.action.ctm: true
+      moneycard.kt.action.bypass.*: true
   moneycard.kt.action.ctm:
     description: 允許玩家將卡片換成錢
     default: true
-  moneycard.kt.action.cbypass:
+  moneycard.kt.action.bypass.*:
+    description: 允許玩家不受插件設置的防非正常功能機制影響
+    defualt: op
+    children:
+      moneycard.kt.action.bypass.crafting: true
+  moneycard.kt.action.bypass.crafting:
     description: 允許玩家將卡片用來合成
     default: op
-
+  moneycard.kt.action.bypass.trading:
+    description: 允許玩家將卡片用來交易
+    default: op

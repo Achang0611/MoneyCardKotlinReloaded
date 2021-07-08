@@ -1,5 +1,6 @@
 package com.vm.plugin.minecraft.commands.executors
 
+import com.vm.plugin.CardLogger
 import com.vm.plugin.logic.Bank
 import com.vm.plugin.logic.CardConverter.moneyToCard
 import com.vm.plugin.minecraft.ChatFormatter
@@ -28,6 +29,7 @@ class GetCard : PlayerArgExecutor(), Helper, RequirePermissible {
         sender as Player
 
         if (!sender.hasPermission(required)) {
+            CardLogger.refuseCommand(sender, required)
             sender send ChatFormatter.notPermission(required)
             return
         }
@@ -41,6 +43,8 @@ class GetCard : PlayerArgExecutor(), Helper, RequirePermissible {
             sender send it
             return
         }
+
+        CardLogger.cardEvent(sender, sender, info)
 
         sender.playSound(sender.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f)
         sender send ChatFormatter.moneyToCard(info)
