@@ -4,7 +4,6 @@ version: ${version}
 author: VM
 depend:
   - Vault
-  - Kotlin
 commands:
   moneycard:
     description: MoneyCard command

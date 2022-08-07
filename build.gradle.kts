@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.net.URI
 
 plugins {
@@ -22,7 +23,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("ch.qos.logback:logback-core:1.2.3")
     compileOnly("ch.qos.logback:logback-classic:1.2.3")
-    implementation(kotlin("stdlib-jdk8"))
+    api(kotlin("stdlib-jdk8"))
 }
 
 tasks.test {
@@ -30,6 +31,8 @@ tasks.test {
 }
 
 tasks.withType<ProcessResources> {
+    filteringCharset = "UTF-8"
+
     filesMatching("plugin.yml") {
         expand(project.properties)
     }
@@ -47,15 +50,15 @@ tasks.withType<Jar> {
     archiveBaseName.set("MoneyCard")
 }
 
-//tasks.withType<ShadowJar> {
-//    archiveClassifier.set("")
-//}
-//
-//val build = (tasks["build"] as Task).apply {
-//    arrayOf(
-//        tasks["shadowJar"]
-//    ).forEach { dependsOn(it) }
-//}
+tasks.withType<ShadowJar> {
+    archiveClassifier.set("")
+}
+
+val build = (tasks["build"] as Task).apply {
+    arrayOf(
+        tasks["shadowJar"]
+    ).forEach { dependsOn(it) }
+}
 
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
